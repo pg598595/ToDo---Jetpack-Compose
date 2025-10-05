@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -46,7 +47,12 @@ fun TaskItem(
             .padding(contentPadding),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Checkbox(checked = task.isCompleted, onCheckedChange = { onCheckedChange(it) })
+        Checkbox(checked = task.isCompleted, onCheckedChange = { onCheckedChange(it) },
+            colors = CheckboxDefaults.colors(
+                checkedColor = Color(0xFF4CAF50),
+                uncheckedColor = textColor.copy(alpha = 0.6f),
+                checkmarkColor = Color.White
+            ))
         Spacer(modifier = Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(task.title, style = MaterialTheme.typography.titleMedium, color = textColor)
