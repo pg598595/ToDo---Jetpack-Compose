@@ -11,37 +11,46 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.todo.ui.AddEditTaskScreen
+import com.example.todo.ui.TaskListScreen
 import com.example.todo.ui.theme.ToDoTheme
+import com.example.todo.viewmodel.TaskViewModel
+import com.example.todo.viewmodel.TaskViewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        val repo = (application as TodoApplication).repository
+        val viewModelFactory = TaskViewModelFactory(repo)
+
         setContent {
-            ToDoTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+            ToDoTheme { // your Material3 theme wrapper
+                val navController = rememberNavController()
+                val vm: TaskViewModel = viewModel(factory = viewModelFactory)
+                NavHost(navController = navController, startDestination = "task_list") {
+                    composable("task_list") {
+                        TaskListScreen(navController = navController, viewModel = vm)
+                    }
+                    composable(
+                        "add_edit/{taskId}",
+                        arguments = listOf(
+                            navArgument("taskId") {
+                                type = NavType.LongType
+                                defaultValue = -1L
+                            }
+                        )
+                    ) { backStack ->
+                        val taskId = backStack.arguments?.getLong("taskId") ?: -1L
+                        AddEditTaskScreen(navController = navController, viewModel = vm, taskId = taskId)
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ToDoTheme {
-        Greeting("Android")
     }
 }
