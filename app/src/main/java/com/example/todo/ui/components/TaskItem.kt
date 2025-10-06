@@ -22,10 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.todo.data.Task
+import com.example.todo.ui.theme.LightCream
 
 @Composable
 fun TaskItem(
@@ -37,7 +37,7 @@ fun TaskItem(
     contentPadding: PaddingValues = PaddingValues(16.dp)
 ) {
 
-    val textColor = if (backgroundColor.luminance() < 0.5f) Color.White else Color.Black
+    val textColor = LightCream
 
     Row(
         Modifier
@@ -47,17 +47,25 @@ fun TaskItem(
             .padding(contentPadding),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Checkbox(checked = task.isCompleted, onCheckedChange = { onCheckedChange(it) },
+        Checkbox(
+            checked = task.isCompleted, onCheckedChange = { onCheckedChange(it) },
             colors = CheckboxDefaults.colors(
                 checkedColor = Color(0xFF4CAF50),
                 uncheckedColor = textColor.copy(alpha = 0.6f),
                 checkmarkColor = Color.White
-            ))
+            )
+        )
         Spacer(modifier = Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(task.title, style = MaterialTheme.typography.titleMedium, color = textColor)
             task.description?.let {
-                Text(it, style = MaterialTheme.typography.bodySmall, maxLines = 2, overflow = TextOverflow.Ellipsis,color = textColor)
+                Text(
+                    it,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    color = textColor
+                )
             }
         }
         IconButton(onClick = onDelete) {

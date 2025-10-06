@@ -29,9 +29,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.todo.ui.theme.DarkRed
+import com.example.todo.ui.theme.LightCream
 import com.example.todo.viewmodel.TaskViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,25 +63,38 @@ fun AddEditTaskScreen(navController: NavController, viewModel: TaskViewModel, ta
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(if (taskId == -1L) "Add Task" else "Edit Task",
-                    ) },
+                title = {
+                    Text(
+                        if (taskId == -1L) "Add Task" else "Edit Task",
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back",
-                            tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF662222),
-                    titleContentColor = Color.White
+                    containerColor = DarkRed,
+                    titleContentColor = LightCream
                 )
             )
         }
     ) { padding ->
         Column(Modifier.fillMaxSize().padding(16.dp).padding(padding)) {
-            OutlinedTextField(value = title, onValueChange = { title = it }, label = { Text("Title") }, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(
+                value = title,
+                onValueChange = { title = it },
+                label = { Text("Title") },
+                modifier = Modifier.fillMaxWidth(),
+            )
             Spacer(Modifier.height(8.dp))
-            OutlinedTextField(value = description, onValueChange = { description = it }, label = { Text("Description") }, modifier = Modifier.fillMaxWidth(), maxLines = 4)
+            OutlinedTextField(
+                value = description,
+                onValueChange = { description = it },
+                label = { Text("Description") },
+                modifier = Modifier.fillMaxWidth(),
+                maxLines = 4
+            )
             Spacer(Modifier.height(8.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(checked = completed, onCheckedChange = { completed = it })
@@ -89,7 +103,12 @@ fun AddEditTaskScreen(navController: NavController, viewModel: TaskViewModel, ta
             Spacer(Modifier.height(16.dp))
             Button(onClick = {
                 if (title.isBlank()) return@Button
-                viewModel.addOrUpdateTask(taskId, title.trim(), description.trim().ifBlank { null }, completed)
+                viewModel.addOrUpdateTask(
+                    taskId,
+                    title.trim(),
+                    description.trim().ifBlank { null },
+                    completed
+                )
                 navController.popBackStack()
             }, modifier = Modifier.fillMaxWidth()) {
                 Text("Save")

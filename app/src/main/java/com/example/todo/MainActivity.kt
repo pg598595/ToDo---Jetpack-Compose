@@ -39,7 +39,11 @@ class MainActivity : ComponentActivity() {
                         )
                     ) { backStack ->
                         val taskId = backStack.arguments?.getLong("taskId") ?: -1L
-                        AddEditTaskScreen(navController = navController, viewModel = vm, taskId = taskId)
+                        AddEditTaskScreen(
+                            navController = navController,
+                            viewModel = vm,
+                            taskId = taskId
+                        )
                     }
                 }
             }

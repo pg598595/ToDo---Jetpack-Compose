@@ -23,10 +23,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.todo.ui.components.TaskItem
+import com.example.todo.ui.theme.DarkRed
+import com.example.todo.ui.theme.LightCream
+import com.example.todo.ui.theme.SoftRed
+import com.example.todo.ui.theme.WineRed
 import com.example.todo.viewmodel.TaskViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,21 +37,22 @@ import com.example.todo.viewmodel.TaskViewModel
 fun TaskListScreen(navController: NavController, viewModel: TaskViewModel) {
     val tasks by viewModel.tasks.collectAsState()
 
-    val itemColors = listOf(
-        Color(0xFFA3485A), // dark red
-        Color(0xFFF5DAA7)  // light yellow
-    )
-
     Scaffold(
-        topBar = { TopAppBar(
-            title = { Text("To-Do") },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color(0xFF662222),
-                titleContentColor = Color.White
+        topBar = {
+            TopAppBar(
+                title = { Text("To-Do") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = DarkRed,
+                    titleContentColor = LightCream
+                )
             )
-        ) },
+        },
         floatingActionButton = {
-            FloatingActionButton(onClick = { navController.navigate("add_edit/-1") }) {
+            FloatingActionButton(
+                onClick = { navController.navigate("add_edit/-1") },
+                containerColor = WineRed,
+                contentColor = LightCream
+            ) {
                 Icon(Icons.Default.Add, contentDescription = "Add task")
             }
         }
@@ -58,22 +62,23 @@ fun TaskListScreen(navController: NavController, viewModel: TaskViewModel) {
                 Text("No tasks yet — add one!")
             }
         } else {
-            LazyColumn(contentPadding =
-                PaddingValues(
-                    top = padding.calculateTopPadding() + 16.dp, // extra 16.dp above list
-                    bottom = padding.calculateBottomPadding() + 16.dp,
-                    start = 16.dp,
-                    end = 16.dp
-                ),
+            LazyColumn(
+                contentPadding =
+                    PaddingValues(
+                        top = padding.calculateTopPadding() + 16.dp, // extra 16.dp above list
+                        bottom = padding.calculateBottomPadding() + 16.dp,
+                        start = 16.dp,
+                        end = 16.dp
+                    ),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                itemsIndexed(tasks) { index,task ->
+                itemsIndexed(tasks) { index, task ->
                     TaskItem(
                         task = task,
                         onCheckedChange = { viewModel.toggleCompleted(task) },
                         onClick = { navController.navigate("add_edit/${task.id}") },
                         onDelete = { viewModel.deleteTask(task) },
-                        backgroundColor = itemColors[index % itemColors.size],
+                        backgroundColor = if (index % 2 == 0) SoftRed else WineRed,
                         contentPadding = PaddingValues(16.dp)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
