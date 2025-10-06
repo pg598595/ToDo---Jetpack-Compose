@@ -13,3 +13,9 @@ The app demonstrates clean architecture, reactive state handling with **StateFlo
 - 💾 **Local Persistence** using Room database  
 - 🔄 **Reactive State Updates** with `StateFlow` and `ViewModel`  
 - 🧭 **Navigation Compose**
+
+## 📱 Screenshots
+
+| Task List | Add/Edit Task | Splash |
+|------------|----------------|--------|
+| <img width="158" height="308" alt="image" src="https://github.com/user-attachments/assets/d0d843ac-b275-4131-9c0c-722ff07b410d" />| <img width="158" height="308" alt="image" src="https://github.com/user-attachments/assets/e08cca1e-d47a-4b32-a372-782293e100f3" /> <img width="158" height="308" alt="image" src="https://github.com/user-attachments/assets/20ff7251-1474-4323-a357-f03d5adfc0ad" />| <img width="158" height="308" alt="image" src="https://github.com/user-attachments/assets/b66385d8-8c17-4e05-b057-2e8e33b14004" />|
